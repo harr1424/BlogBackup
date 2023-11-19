@@ -4,7 +4,7 @@ const axios = require("axios");
 const { JSDOM } = require("jsdom");
 const fs = require('fs');
 const prompt = require("prompt-sync")({ sigint: true });
-const config = require('./config');
+const config = require('./config'); // add your own config file to specify the blog's URL
 
 
 
