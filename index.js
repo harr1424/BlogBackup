@@ -117,7 +117,6 @@ async function scrapeCurrentlyShownPosts(mainPage) {
                 postData.content = postBodyContent;
             }
 
-
             postData.URL = post;
 
             var dateHeader = document.querySelector('.date-header');
