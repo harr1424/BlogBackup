@@ -32,13 +32,13 @@ async function crawl() {
             timeout: 30000
         });
         let numMainPagesWithNoNewPosts = 0;
-        let { nextPage, numNewPostsFound } = await scrapeCurrentlyShownPosts(mainPage); 
+        let { nextPage, numNewPostsFound } = await scrapeCurrentlyShownPosts(mainPage);
         let numTimesOlderPostsClicked = 1;
 
         while (nextPage) {
             console.log(`Older posts has been clicked ${numTimesOlderPostsClicked} times`);
-            
-            await mainPage.goto(nextPage, { 
+
+            await mainPage.goto(nextPage, {
                 waitUntil: 'networkidle2',
                 timeout: 30000
             });
@@ -94,7 +94,7 @@ async function scrapeCurrentlyShownPosts(mainPage) {
         const postPromises = filteredHrefs.map(async (post) => {
             const resp = await axios.get(post);
             const html = resp.data;
-            const dom = new JSDOM(html);
+            const dom =  new JSDOM(html);
             const document = dom.window.document;
 
             // Use Readability to access post title and content
@@ -109,12 +109,15 @@ async function scrapeCurrentlyShownPosts(mainPage) {
             postData.title = article.title;
 
             /* Readability fails to elect the actual content as article content for short posts */
-            //postData.content = article.textContent;
 
             var postBodyDiv = document.querySelector('.post-body.entry-content');
             if (postBodyDiv) {
                 var postBodyContent = postBodyDiv.textContent;
                 postData.content = postBodyContent;
+            }
+            else {
+                postData.content = article.textContent;
+
             }
 
             postData.URL = post;
